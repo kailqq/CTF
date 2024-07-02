@@ -1,0 +1,262 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{mismath}
+\usepackage{calc}
+\usepackage{latexsym}
+\usepackage{zhnumber}
+\usepackage{ctex}
+\usepackage{subfiles}
+\usepackage{advdate}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{graphicx}
+ \usepackage{color}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{underscore}
+\usepackage{bm}
+\usepackage{minted}
+\usepackage{mathrsfs}
+\definecolor{grey}{HTML}{E7EAEF}
+\setminted{bgcolor=grey,autogobble, breaklines, linenos,breakanywhere,breakautoindent, frame=lines, framesep=2mm, baselinestretch=1.2, fontsize=\footnotesize}
+% ewenvironment{longlisting}{\captionsetup{type=listing}}{}
+
+\title{CTF101 - Lab0}
+\author{3230102400 张晋恺}
+\begin{document}
+\maketitle
+     \section*{Prerequisite}
+     \subsection*{Challege 1}
+         \subsubsection*{4个shell命令}
+            \begin{enumerate}
+                \item \texttt{la} - 列出当前目录下的所有文件，及其基本信息，包括隐藏文件,与\texttt{ls -a}类似
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{./figure/la.png}
+                    \caption{la}
+                \end{figure}
+                \item \texttt{pwd} - 显示当前路径
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{./figure/pwd.png}
+                    \caption{pwd}
+                \end{figure}
+                \item \texttt{cat} - 显示文件内容,配合重定向符号\texttt{>}可以将文件内容输出到另一个文件
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{./figure/cat.png}
+                    \caption{cat}
+                \end{figure}
+                输入该命令后回车，会将接下来的输入内容输出到文件\texttt{test.txt}中，查看后，继续用\texttt{>>}符号继续追加
+                \item \texttt{echo} - 用于将文本内容输出到标准输出设备。它可以输出字符串、变量值以及一些特殊字符。也可以通过重定向来规定输出位置,\textcolor{blue}{前面加上\$符号后，可以和命令替换结合使用}。
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=0.5\textwidth]{./figure/echo.png}
+                    \caption{echo}
+                \end{figure}
+            \end{enumerate}
+           \subsubsection*{ssh远程连接到Linux环境}
+             \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{./figure/ssh.png}
+                \caption{ssh}
+             \end{figure} 
+             在\texttt{windows - powershell}中通过\texttt{ssh}远程连接到linux环境中$\mathbf{Kailoveq}$用户,可以通过\texttt{exit}命令退出 \par 
+              值得注意的是，在 \texttt{ifconfig} 查看IP地址时，\textcolor{red}{inet}后面的地址即为IP地址，且会发现有两个，其中\textbf{127.0.0.1}为本机地址，\textbf{10.196.229.227}为windows的地址，在windows中ssh连接时，需要连接的是\textbf{127.0.0.1}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{./figure/ifconfig.png}
+                \caption{ifconfig}
+            \end{figure}   
+
+        \subsection*{Challege2}
+           \subsubsection*{解释以下代码功能}
+           \begin{minted}{python}
+               data = input("give me your string: ")
+print("length of string:", len(data))
+
+data_old = data
+data_new = ""
+for d in data:
+    if d in 'abcdefghijklmnopqrstuvwxyz':
+        data_new += chr(ord(d) - 32)
+    elif d in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+        data_new += chr(ord(d) + 32)
+    else:
+        data_new += d
+
+print("now your string:", data_new)
+           \end{minted}  
+          \begin{itemize}
+          \item 这段代码首先读入一个字符串\texttt{data_old}，然后输出得到的字符串长度（通过\texttt{len}函数），然后输出另外一个字符串\texttt{data_new},新字符串中的字母部分发生了大小写的转换 
+          \item \texttt{ord}用于得到字符的ASCII码，\texttt{chr}将数字转换为对应的字符
+          \item \mintinline{python}{data_new += chr(ord(d) - 32)}用于把小写字母转换为大写
+          \item \mintinline{python}{data_new += chr(ord(d) + 32)}用于把大写字母转换为小写
+          \end{itemize}
+          \subsubsection*{School_BUS-calculator}
+          代码如下
+        \begin{minted}{python}
+import socket
+HOST = "10.214.160.13"  # IP address
+PORT = 11002            # Port number
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   # create socket
+
+s.connect((HOST, PORT))    # connect to this challenge
+
+def recv_one_line(socket):
+    buf = b""
+    while True:
+        data = socket.recv(1)
+        if data == b'\n':
+            return buf
+        buf += data
+
+def recv_one_question(socket):
+    buf = b""
+    while True:
+        data = socket.recv(1)
+        if data == b'=':
+            return buf
+        buf += data
+        
+recv_one_line(s)    # ================================================
+recv_one_line(s)    # Mom: finish these 10 super simple calculations,
+recv_one_line(s)    #       and you will get a flag
+recv_one_line(s)    # Melody: that's easy...
+recv_one_line(s)    # Mom: yep, in 10 seconds
+recv_one_line(s)    # ================================================   #
+for i in range(10):
+    recv_one_line(s) 
+    s.send(b"%d\n"%(eval(recv_one_question(s))))
+    recv_one_line(s) #        
+    print(recv_one_line(s))
+recv_one_line(s)
+print(recv_one_line(s))
+s.close()
+            
+        \end{minted}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{./figure/solved.png}
+        \caption{solved}
+     \end{figure} 
+\section*{Misc}
+\subsection*{Challege 1}
+\paragraph*{解码}：根据提示，使用CyberChef工具，把神奇妙妙工具 \texttt{Magic},拉到Recipe中，output中得到flag，同时也得到解码顺序为
+$$ BASE85 \quad BASE32 \quad BASE64 $$
+\paragraph*{学习BASE编码}：\textbf{ASCII}码对应的字符有的是不可见的，这时候需要\textbf{BASE}编码方式，取每个字符的二进制形式，不足八位高位补0，然后串联起来，通过把字节切片作为新的一个字符，例如\textbf{BASE16}把四个字符作为新的，就有$2^{4}=16$ 种，所以是\textbf{BASE16}，\textbf{BASE64},对于\textbf{BASE85},类似于\textbf{BASE64},对应的ALPHA表中也会变化。
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figure/cyberchef.png}
+    \caption{magic}
+\end{figure}
+\textcolor{blue}{另外，在output旁边有一个魔法杖，点击几下不知道为啥就可以直接得到flag了}
+\par 最终flag为\textcolor{red}{ AAA\{wELc0m3\_t0\_Ctf\_5umMEr\_c0UrsE\_2024\}}
+\subsection*{Challege 2}
+\paragraph*{找出图片中的flag}：
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{./figure/misc_challenge2.png}
+    \caption{flag}
+\end{figure}
+\paragraph*{}根据提示，第一部分使用了LGB隐写，网上搜索了LGB隐写的方式之后，首先使用binwalk查看图片，发现只有一个JPG文件，然后下载配置完stegsolve之后使用stegsolve查看,根据LGB隐写的原理，从原图改变为\texttt{Red plane 0}之后，发现有明显的变化，得到第一部分flag
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{./figure/Part1.png}
+    \caption{第一部分}
+\end{figure}
+\paragraph*{}第二部分一开始我没有理解仔细阅读文件内容是什么意思，后面询问了学长知道所指的文件是图片，然后又盯了好久，发现图片好像没什么额外的信息，然后了解到可以尝试看图片的16进制文件，最后下载使用了\texttt{winhex}工具，打开图片，可以看到它的16进制表示，然后\textbf{仔细查看内容}，发现第二部分flag藏在最末尾
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./figure/part2.png}
+    \caption{第二部分}
+\end{figure}
+最终flag为:\textcolor{red}{AAA\{gr3@t\_J08!\_1et'5_pl@y\_m1SC\_TOG3TH3R\}}
+\section*{Crypto}
+\subsection*{Challege 1}
+\par 破译以下密码
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{./figure/crypto1.png}
+    \caption{crypto}
+\end{figure}
+\paragraph*{解答过程}：由hint，首先我去嗯读了一把跳舞的小人，然后发现每个符号的出现频率与字母出现频率有关，那么想法就是，\textbf{统计比例，和字母对应},由于对Python还不是很熟悉，所以我不厌其烦的为每个符号标上了号，然后统计对应数据出现的频率，得到了他们出现频率的排序，然后和字母表出现的频率对应。
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{./figure/crypto.jpg}
+        \caption{标号}
+    \end{figure}
+    然后我编写了一个小程序，将对应的符号替换为字母
+    \begin{minted}{C}
+        #include<stdio.h>
+        #include<stdlib.h>
+        int main()
+        {
+            char alpha[27];
+            int index;
+            char standard[30] = "0ETAOINSRHLDUCFMWYGPBVkxjqz";
+            for(int i=1;i<=21;i++)
+            {
+                scanf("%d",&index);
+                alpha[index] = standard[i];
+                 printf("alpha[%d]=%c\n",index,alpha[index]);
+            }
+            int oper;
+            for(int i=1;i<=21;i++)
+            {
+                printf("%c",alpha[i]);
+            }
+            printf("\n");
+           
+            while(1)
+            {
+                if(scanf("%d",&oper)==EOF)
+                {
+                    break;
+                }
+                if(oper==0)
+                {
+                    printf("\n");
+                }
+                if(oper==-1)
+                {
+                    printf(" ");
+                }
+                if(oper>0)
+                {
+                    printf("%c",alpha[oper]);
+                }
+            }
+         }
+    \end{minted}
+    一开始stander里面的都是小写字母，但是输入不一定完全按概率分别对应，所以还需要试错，来交换输入顺序，当确定好对应关系后，就改为大写，这样一步步排除，当输出的结果全为大写字母时，就得到了对应的信息
+    最后，我破译出来的信息为：
+    \paragraph*{}TONIGHT ETHAN WILL ARRIVE HERE PLEASE LURE HIM TO THE ABANDONED WAREHOUSE NEAR THE POLICE STATION WHERE THE PROFESSIONAL ASSASSIN REESE HIRED WILL ELIMNATE HIM TOMORROW SHE WILL GO TO THE WAREHOUSE AND BECOME THE FIRST PERSON TO HISCOVER HIS CORPSE WITH A STRONG ALIBI THESE POLICE OFFICERS ABSOLUTELY CAN NOT ARREST HER
+    大致是讲将一个人引诱到一个废弃的仓库，然后雇佣的职业杀手会在明天消灭他，然后一个人会去那个仓库，成为第一个发现他尸体的人，有一个强有力的不在场证明，这些警察绝对不能逮捕她
+
+\subsection*{Challege 2}
+\paragraph*{解密}：解出密文c对应的明文m
+\par 学习了RSA加密解密的原理，给出\texttt{p,q,c,n}以及公钥\texttt{e}，那么只要求出\texttt{d}，就可以解密出明文$m=c^{d}\mod\varphi(n)$,而\texttt{d}为\texttt{e}关于$\varphi(n)$的模逆元，利用扩展欧几里得算法可以求出\texttt{d}，然后解密出明文
+代码如下
+\begin{minted}{python}
+def ext_gcd(a, b):   
+    if b == 0:          
+        return 1, 0, a     
+    else:         
+        x, y, gcd = ext_gcd(b, a % b)         
+        x, y = y, (x - (a // b) * y)          
+        return x, y, gcd
+p = 0x848cc7edca3d2feef44961881e358cbe924df5bc0f1e7178089ad6dc23fa1eec7b0f1a8c6932b870dd53faf35b22f35c8a7a0d130f69e53a91d0330c0af2c5ab
+q = 0xa0ac7bcd3b1e826fdbd1ee907e592c163dea4a1a94eb03fd4d3ce58c2362100ec20d96ad858f1a21e8c38e1978d27cd3ab833ee344d8618065c003d8ffd0b1cb
+n = p * q
+e = 0x10001
+d,k,_=ext_gcd(e,(p-1)*(q-1))
+c = 0x39f68bd43d1433e4fcbbe8fc0063661c97639324d63e67dedb6f4ed4501268571f128858b2f97ee7ce0407f24320a922787adf4d0233514934bbd7e81e4b4d07b423949c85ae3cc172ea5bcded917b5f67f18c2c6cd1b2dd98d7db941697ececdfc90507893579081f7e3d5ddeb9145a715abc20c4a938d32131013966bea539
+m=pow(c,d,n)
+print(int.to_bytes(m, (m.bit_length() + 7) // 8, 'big'))
+\end{minted}
+最终解密出来的明文为\textcolor{red}{AAA\{Ace\_Attorney\_is\_very\_fun\_Phoenix\_Wright\&Miles\_Edgeworth\}}
+    \end{document}

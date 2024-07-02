@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k+kn}{import} \PYG{n+nn}{socket}
+\PYG{n}{HOST} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}10.214.160.13\PYGZdq{}}  \PYG{c+c1}{\PYGZsh{} IP address}
+\PYG{n}{PORT} \PYG{o}{=} \PYG{l+m+mi}{11002}            \PYG{c+c1}{\PYGZsh{} Port number}
+
+\PYG{n}{s} \PYG{o}{=} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{socket}\PYG{p}{(}\PYG{n}{socket}\PYG{o}{.}\PYG{n}{AF\PYGZus{}INET}\PYG{p}{,} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{SOCK\PYGZus{}STREAM}\PYG{p}{)}   \PYG{c+c1}{\PYGZsh{} create socket}
+
+\PYG{n}{s}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{((}\PYG{n}{HOST}\PYG{p}{,} \PYG{n}{PORT}\PYG{p}{))}    \PYG{c+c1}{\PYGZsh{} connect to this challenge}
+
+\PYG{k}{def} \PYG{n+nf}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{socket}\PYG{p}{):}
+    \PYG{n}{buf} \PYG{o}{=} \PYG{l+s+sa}{b}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}
+    \PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+        \PYG{n}{data} \PYG{o}{=} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{recv}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{data} \PYG{o}{==} \PYG{l+s+sa}{b}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:}
+            \PYG{k}{return} \PYG{n}{buf}
+        \PYG{n}{buf} \PYG{o}{+=} \PYG{n}{data}
+
+\PYG{k}{def} \PYG{n+nf}{recv\PYGZus{}one\PYGZus{}question}\PYG{p}{(}\PYG{n}{socket}\PYG{p}{):}
+    \PYG{n}{buf} \PYG{o}{=} \PYG{l+s+sa}{b}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}
+    \PYG{k}{while} \PYG{k+kc}{True}\PYG{p}{:}
+        \PYG{n}{data} \PYG{o}{=} \PYG{n}{socket}\PYG{o}{.}\PYG{n}{recv}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{data} \PYG{o}{==} \PYG{l+s+sa}{b}\PYG{l+s+s1}{\PYGZsq{}=\PYGZsq{}}\PYG{p}{:}
+            \PYG{k}{return} \PYG{n}{buf}
+        \PYG{n}{buf} \PYG{o}{+=} \PYG{n}{data}
+
+
+\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}    \PYG{c+c1}{\PYGZsh{} ================================================}
+\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}    \PYG{c+c1}{\PYGZsh{} Mom: finish these 10 super simple calculations,}
+\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}    \PYG{c+c1}{\PYGZsh{}       and you will get a flag}
+\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}    \PYG{c+c1}{\PYGZsh{} Melody: that\PYGZsq{}s easy...}
+\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}    \PYG{c+c1}{\PYGZsh{} Mom: yep, in 10 seconds}
+\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}    \PYG{c+c1}{\PYGZsh{} ================================================   \PYGZsh{}}
+\PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{):}
+    \PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}
+    \PYG{n}{s}\PYG{o}{.}\PYG{n}{send}\PYG{p}{(}\PYG{l+s+sa}{b}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n+nb}{eval}\PYG{p}{(}\PYG{n}{recv\PYGZus{}one\PYGZus{}question}\PYG{p}{(}\PYG{n}{s}\PYG{p}{))))}
+    \PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{))}
+\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{recv\PYGZus{}one\PYGZus{}line}\PYG{p}{(}\PYG{n}{s}\PYG{p}{))}
+\PYG{n}{s}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+
+\end{Verbatim}
