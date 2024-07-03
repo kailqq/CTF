@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.5.23)  30 MAY 2024 18:07
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.5.23)  3 JUL 2024 11:50
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -879,27 +879,81 @@ LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <7.52812> not available
 0.pygtex) [4]
 File: ./figure/solved.png Graphic file (type bmp)
 <./figure/solved.png>
+\openout3 = `lab0.pyg'.
+
+
+(./_minted-lab0/815E6551D699926F6424CE418B27982B0CF3F4FA33A23F981FFAF1B7CF6CCD2
+0.pygtex) [5]
+\openout4 = `lab0.pyg'.
+
+
+(./_minted-lab0/42A11AF6227ACDA973CFD368BC8AA5C00CF3F4FA33A23F981FFAF1B7CF6CCD2
+0.pygtex)
+File: ./figure/web2.png Graphic file (type bmp)
+<./figure/web2.png>
+\openout3 = `lab0.pyg'.
+
+ [6]
+(./_minted-lab0/C3DBDD4FD951125541C6CF79EFBCA5500CF3F4FA33A23F981FFAF1B7CF6CCD2
+0.pygtex)
+\openout3 = `lab0.pyg'.
+
+
+(./_minted-lab0/633C369015253597306037E41FDCB29136ACC222E5FED5CC482DEAE762CCD98
+A.pygtex
+
+LaTeX Font Warning: Font shape `TU/FandolFang-Regular(0)/m/it' undefined
+(Font)              using `TU/FandolFang-Regular(0)/m/n' instead on input line 
+31.
+
+) [7]
+Underfull \vbox (badness 10000) detected at line 289
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 289
+ []
+
+[8]
+\openout4 = `lab0.pyg'.
+
+
+(./_minted-lab0/EEEB43BBE4011FD4E1435A1B637FB1F09260BA7DA5B5C5C94BF3AE0FFB8D65B
+D.pygtex)
+Overfull \hbox (22.6241pt too wide) in paragraph at lines 291--292
+[]\TU/FandolSong-Regular(0)/m/n/10.53937 可 以 使 用 命 令[][][][][][]来
+ []
+
+File: ./figure/reverse.png Graphic file (type bmp)
+<./figure/reverse.png>
+[9]
+File: ./figure/reverse2.png Graphic file (type bmp)
+<./figure/reverse2.png>
+File: ./figure/solution.png Graphic file (type bmp)
+<./figure/solution.png>
+File: ./figure/success.png Graphic file (type bmp)
+<./figure/success.png>
+ [10]
 File: ./figure/cyberchef.png Graphic file (type bmp)
 <./figure/cyberchef.png>
- [5]
+ [11]
 File: ./figure/misc_challenge2.png Graphic file (type bmp)
 <./figure/misc_challenge2.png>
 File: ./figure/Part1.png Graphic file (type bmp)
 <./figure/Part1.png>
- [6]
+ [12]
 File: ./figure/part2.png Graphic file (type bmp)
 <./figure/part2.png>
 File: ./figure/crypto1.png Graphic file (type bmp)
 <./figure/crypto1.png>
- [7]
+ [13]
 File: ./figure/crypto.jpg Graphic file (type bmp)
 <./figure/crypto.jpg>
- [8]
 \openout3 = `lab0.pyg'.
 
-
+ [14]
 (./_minted-lab0/A88265F53E185D7F77E2B3480F28F1DB9260BA7DA5B5C5C94BF3AE0FFB8D65B
-D.pygtex) [9]
+D.pygtex) [15]
 \openout3 = `lab0.pyg'.
 
 
@@ -915,27 +969,30 @@ LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5.52061> not available
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.52061> not available
 (Font)              size <6> substituted on input line 9.
 
-) [10]
-Overfull \hbox (16.7381pt too wide) in paragraph at lines 260--262
+)
+Overfull \hbox (16.7381pt too wide) in paragraph at lines 434--436
 \TU/FandolSong-Regular(0)/m/n/10.53937 最 终 解 密 出 来 的 明 文 为[]\TU/lmr/m/n/10.5393
 7 AAA{Ace_-Attorney_-is_-very_-fun_-Phoenix_-Wright&Miles_-Edgeworth}[] 
  []
 
-[11] (./lab0.aux)
+[16] (./lab0.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.47939pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 runsystem(rm lab0.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 15689 strings out of 476683
- 365448 string characters out of 5804047
- 1895018 words of memory out of 5000000
- 35567 multiletter control sequences out of 15000+600000
- 534717 words of font info for 159 fonts, out of 8000000 for 9000
+ 15780 strings out of 476683
+ 370085 string characters out of 5804047
+ 1903018 words of memory out of 5000000
+ 35637 multiletter control sequences out of 15000+600000
+ 534725 words of font info for 160 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 89i,10n,97p,372b,772s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,10n,97p,664b,773s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on lab0.pdf (11 pages).
+Output written on lab0.pdf (16 pages).

@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{requests}
+\PYG{k+kn}{import} \PYG{n+nn}{re}
+
+\PYG{n}{sess} \PYG{o}{=} \PYG{n}{requests}\PYG{o}{.}\PYG{n}{Session}\PYG{p}{()}
+
+\PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{1337}\PYG{p}{):}
+    \PYG{n}{res} \PYG{o}{=} \PYG{n}{sess}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}http://pumpk1n.com/lab0.php\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{r} \PYG{o}{=} \PYG{n}{re}\PYG{o}{.}\PYG{n}{findall}\PYG{p}{(}\PYG{l+s+sa}{r}\PYG{l+s+s2}{\PYGZdq{}token=(.*)\PYGZsq{}\PYGZdq{}}\PYG{p}{,} \PYG{n}{res}\PYG{o}{.}\PYG{n}{text}\PYG{p}{)}
+    \PYG{n}{flag} \PYG{o}{=} \PYG{n}{sess}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}http://pumpk1n.com/flag.php?token=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{r}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{i} \PYG{o}{==} \PYG{l+m+mi}{1336}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{flag}\PYG{o}{.}\PYG{n}{text}\PYG{p}{)}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{valgrind}\PYG{+w}{ }\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{log}\PYG{o}{\PYGZhy{}}\PYG{n}{file}\PYG{o}{=}\PYG{n}{log}\PYG{p}{.}\PYG{n}{txt}\PYG{+w}{ }\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{leak}\PYG{o}{\PYGZhy{}}\PYG{n}{check}\PYG{o}{=}\PYG{n}{full}\PYG{+w}{ }\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{show}\PYG{o}{\PYGZhy{}}\PYG{n}{leak}\PYG{o}{\PYGZhy{}}\PYG{n}{kinds}\PYG{o}{=}\PYG{n}{all}\PYG{+w}{ }\PYG{p}{.}\PYG{o}{/}\PYG{n}{program}\PYG{p}{.}\PYG{n}{elf}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{pkt1}
+\end{Verbatim}

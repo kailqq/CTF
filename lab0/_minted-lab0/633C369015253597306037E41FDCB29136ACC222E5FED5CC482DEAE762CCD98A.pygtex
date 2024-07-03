@@ -1,0 +1,86 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}stdio.h\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}stdlib.h\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}string.h\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}stdint.h\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}stdbool.h\PYGZgt{}}
+
+\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{size}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{timestamp}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{index}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{cred}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{n}{data}\PYG{p}{[];}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{get\PYGZus{}heart\PYGZus{}beat}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{uint8\PYGZus{}t}\PYG{+w}{ }\PYG{n}{buffer}\PYG{p}{[}\PYG{l+m+mh}{0x1000}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{};}
+\PYG{+w}{    }\PYG{n}{fread}\PYG{p}{(}\PYG{n}{buffer}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{sizeof}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{p}{),}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{stdin}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{tmp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{+w}{ }\PYG{o}{*}\PYG{p}{)}\PYG{n}{buffer}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{tmp}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mh}{0x1000}\PYG{p}{)}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{k}{if}\PYG{p}{(}\PYG{n}{tmp}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{k}{sizeof}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{p}{))}\PYG{n}{fread}\PYG{p}{(}\PYG{n}{tmp}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{data}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{tmp}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{k}{sizeof}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{p}{),}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{stdin}\PYG{p}{);}
+\PYG{+w}{    }\PYG{k}{else}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Invalid size}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{c+c1}{//增加判断，防止 size 小于等于 sizeof(struct hbpkt) 时无符号数溢出}
+
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{real\PYGZus{}size}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{sizeof}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{tmp}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{data}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{res}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{malloc}\PYG{p}{(}\PYG{n}{real\PYGZus{}size}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{n}{res}\PYG{p}{)}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n+nb}{NULL}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{n}{memcpy}\PYG{p}{(}\PYG{n}{res}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{buffer}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{real\PYGZus{}size}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{n}{res}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{index}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{res}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{real\PYGZus{}size}\PYG{p}{;}\PYG{c+c1}{//更新size，防止溢出}
+
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{res}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{reply\PYGZus{}heart\PYGZus{}beat}\PYG{p}{(}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{pkt}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{err}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{written}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{pkt}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{p}{)}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{written}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{fwrite}\PYG{p}{(}\PYG{n}{pkt}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pkt}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{stdout}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{fflush}\PYG{p}{(}\PYG{n}{stdout}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{written}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{written}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{pkt}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{p}{)}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{err}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{err}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{main}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{err}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{)}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{hbpkt}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{get\PYGZus{}heart\PYGZus{}beat}\PYG{p}{();}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{n}{p}\PYG{p}{)}
+\PYG{+w}{            }\PYG{k}{continue}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{n}{err}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{reply\PYGZus{}heart\PYGZus{}beat}\PYG{p}{(}\PYG{n}{p}\PYG{p}{);}
+
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{err}\PYG{p}{)}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{free}\PYG{p}{(}\PYG{n}{p}\PYG{p}{);}
+\PYG{+w}{            }\PYG{k}{continue}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{n}{free}\PYG{p}{(}\PYG{n}{p}\PYG{p}{);}\PYG{c+c1}{//释放内存}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

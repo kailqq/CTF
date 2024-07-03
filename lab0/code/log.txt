@@ -1,0 +1,81 @@
+==13131== Memcheck, a memory error detector
+==13131== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==13131== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==13131== Command: ./program.elf
+==13131== Parent PID: 382
+==13131== 
+==13131== Syscall param write(buf) points to unaddressable byte(s)
+==13131==    at 0x4979887: write (write.c:26)
+==13131==    by 0x48EFEEC: _IO_file_write@@GLIBC_2.2.5 (fileops.c:1180)
+==13131==    by 0x48F07CF: new_do_write (fileops.c:448)
+==13131==    by 0x48F07CF: _IO_new_file_xsputn (fileops.c:1254)
+==13131==    by 0x48F07CF: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==13131==    by 0x48E4FD6: fwrite (iofwrite.c:39)
+==13131==    by 0x400921: reply_heart_beat (program.c:49)
+==13131==    by 0x40097B: main (program.c:70)
+==13131==  Address 0x4a920b0 is 0 bytes after a block of size 48 alloc'd
+==13131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13131==    by 0x40087A: get_heart_beat (program.c:30)
+==13131==    by 0x400964: main (program.c:66)
+==13131== 
+==13131== Conditional jump or move depends on uninitialised value(s)
+==13131==    at 0x400983: main (program.c:72)
+==13131== 
+==13131== Syscall param read(buf) points to unaddressable byte(s)
+==13131==    at 0x49797E2: read (read.c:26)
+==13131==    by 0x48F0394: _IO_file_xsgetn (fileops.c:1341)
+==13131==    by 0x48E4BA8: fread (iofread.c:38)
+==13131==    by 0x400850: get_heart_beat (program.c:26)
+==13131==    by 0x400964: main (program.c:66)
+==13131==  Address 0x1fff001000 is not stack'd, malloc'd or (recently) free'd
+==13131== 
+==13131== Conditional jump or move depends on uninitialised value(s)
+==13131==    at 0x400938: reply_heart_beat (program.c:53)
+==13131==    by 0x40097B: main (program.c:70)
+==13131== 
+==13131== Conditional jump or move depends on uninitialised value(s)
+==13131==    at 0x400945: reply_heart_beat (program.c:53)
+==13131==    by 0x40097B: main (program.c:70)
+==13131== 
+==13131== 
+==13131== Process terminating with default action of signal 2 (SIGINT)
+==13131==    at 0x49797E0: read (read.c:26)
+==13131==    by 0x48F0394: _IO_file_xsgetn (fileops.c:1341)
+==13131==    by 0x48E4BA8: fread (iofread.c:38)
+==13131==    by 0x400850: get_heart_beat (program.c:26)
+==13131==    by 0x400964: main (program.c:66)
+==13131== 
+==13131== HEAP SUMMARY:
+==13131==     in use at exit: 5,120 bytes in 2 blocks
+==13131==   total heap usage: 1,647,467 allocs, 1,647,465 frees, 26,364,592 bytes allocated
+==13131== 
+==13131== 1,024 bytes in 1 blocks are still reachable in loss record 1 of 2
+==13131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13131==    by 0x48E3BA3: _IO_file_doallocate (filedoalloc.c:101)
+==13131==    by 0x48F2CDF: _IO_doallocbuf (genops.c:347)
+==13131==    by 0x48F1F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+==13131==    by 0x48F06D4: _IO_new_file_xsputn (fileops.c:1243)
+==13131==    by 0x48F06D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+==13131==    by 0x48E4FD6: fwrite (iofwrite.c:39)
+==13131==    by 0x400921: reply_heart_beat (program.c:49)
+==13131==    by 0x40097B: main (program.c:70)
+==13131== 
+==13131== 4,096 bytes in 1 blocks are still reachable in loss record 2 of 2
+==13131==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13131==    by 0x48E3BA3: _IO_file_doallocate (filedoalloc.c:101)
+==13131==    by 0x48F2CDF: _IO_doallocbuf (genops.c:347)
+==13131==    by 0x48F04C3: _IO_file_xsgetn (fileops.c:1287)
+==13131==    by 0x48E4BA8: fread (iofread.c:38)
+==13131==    by 0x4007FA: get_heart_beat (program.c:19)
+==13131==    by 0x400964: main (program.c:66)
+==13131== 
+==13131== LEAK SUMMARY:
+==13131==    definitely lost: 0 bytes in 0 blocks
+==13131==    indirectly lost: 0 bytes in 0 blocks
+==13131==      possibly lost: 0 bytes in 0 blocks
+==13131==    still reachable: 5,120 bytes in 2 blocks
+==13131==         suppressed: 0 bytes in 0 blocks
+==13131== 
+==13131== Use --track-origins=yes to see where uninitialised values come from
+==13131== For lists of detected and suppressed errors, rerun with: -s
+==13131== ERROR SUMMARY: 4942395 errors from 5 contexts (suppressed: 0 from 0)
